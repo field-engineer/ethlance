@@ -907,7 +907,10 @@
   (fn [{:keys [db]} [args]]
     (let [{:keys [:conversion-rates]} db
           {:keys [:search/min-budget :search/min-budget-currency]} args
-          min-budgets (u/value-in-all-currencies (u/parse-float min-budget) min-budget-currency conversion-rates)]
+          min-budget (u/parse-float min-budget)
+          min-budgets (if-not (zero? min-budget)
+                        (u/value-in-all-currencies min-budget min-budget-currency conversion-rates)
+                        [])]
       {:dispatch [:list/load-ids {:list-key :list/search-jobs
                                   :fn-key :ethlance-search-jobs/search-jobs
                                   :load-dispatch-key :contract.db/load-jobs

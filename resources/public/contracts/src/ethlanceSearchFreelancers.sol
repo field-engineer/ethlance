@@ -27,7 +27,6 @@ contract EthlanceSearchFreelancers {
         uint jobRecommendations 3
         uint offset, 4
         uint limit, 5
-        uint seed 6
         */
     )
         constant returns
@@ -35,15 +34,7 @@ contract EthlanceSearchFreelancers {
         address[] userIds)
     {
         userIds = UserLibrary.searchFreelancers(ethlanceDB, categoryId, skillsAnd, skillsOr,
-        minAvgRating, minRatingsCount, minHourlyRates, maxHourlyRates, uintArgs);
-        if (userIds.length > 0) {
-            if (uintArgs[4] > userIds.length) {
-                return SharedLibrary.take(0, userIds);
-            } else if (uintArgs[4] + uintArgs[5] > userIds.length) {
-                uintArgs[5] = userIds.length - uintArgs[4];
-            }
-            userIds = SharedLibrary.getPage(userIds, (uintArgs[6] + uintArgs[4]) % userIds.length, uintArgs[5], true);
-        }
-        return userIds;
+            minAvgRating, minRatingsCount, minHourlyRates, maxHourlyRates, uintArgs);
+        return SharedLibrary.getPage(userIds, uintArgs[4], uintArgs[5], false);
     }
 }

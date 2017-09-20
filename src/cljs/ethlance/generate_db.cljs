@@ -147,11 +147,11 @@
      :dispatch-later (concat
                        [{:ms 10 :dispatch [:contract.user/register-employer employer1 (get-address 1)]}]
                        #_(map #(hash-map :ms 100 :dispatch [:contract.job/add-job (gen-job) (get-address 1) :form.job/add-job]) (range 10))
-                       (map #(hash-map :ms 100 :dispatch [:contract.job/add-job (gen-job-sponsorable) (get-address 1)]) (range 10))
+                       (map #(hash-map :ms 100 :dispatch [:contract.job/add-job (gen-job-sponsorable) (get-address 1)]) (range 15))
                        #_[{:ms 20 :dispatch [:contract.contract/add-job-invitation invitation1 (get-address 1)]}
                           {:ms 30 :dispatch [:contract.contract/add-job-proposal proposal1 (get-address 0)]}
                           {:ms 40 :dispatch [:contract.contract/add-contract (gen-contract 1) (get-address 1)]}]
-                       (map #(hash-map :ms 50 :dispatch [:contract.user/register-freelancer (gen-freelancer) (get-address %)]) (range 2 8))
+                       (map #(hash-map :ms 50 :dispatch [:contract.user/register-freelancer (gen-freelancer) (get-address %)]) (range 2 10))
                        #_(map #(hash-map :ms 150 :dispatch [:contract.contract/add-job-proposal (gen-proposal %) (get-address 0)]) (range 1 10))
                        #_(map #(hash-map :ms 300 :dispatch [:contract.contract/add-contract (gen-contract %) (get-address 1)]) (range 1 10))
                        #_(map #(hash-map :ms 60 :dispatch [:contract.contract/add-job-invitation (gen-invitation 1) (get-address 1)]) (range 5))

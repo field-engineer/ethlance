@@ -395,11 +395,23 @@ library UserLibrary {
         internal returns (address[] userIds)
     {
         uint j = 0;
-        var allUserIds = SharedLibrary.intersectCategoriesAndSkills(db, categoryId, skillsAnd, skillsOr,
-            SkillLibrary.getFreelancers, CategoryLibrary.getFreelancers, getUserCount, getAllUsers);
-        userIds = new address[](allUserIds.length);
-        for (uint i = 0; i < allUserIds.length ; i++) {
-            var userId = allUserIds[i];
+        bool hasSkillsOrCategory = (skillsAnd.length != 0 || skillsOr.length != 0 || categoryId != 0);
+        address[] memory allUserIds;
+        if (hasSkillsOrCategory) {
+            allUserIds = SharedLibrary.intersectCategoriesAndSkills(db, categoryId, skillsAnd, skillsOr,
+                SkillLibrary.getFreelancers, CategoryLibrary.getFreelancers, getUserCount, getAllUsers);
+        }
+        userIds = new address[](uintArgs[4] + uintArgs[5]);
+        uint i = hasSkillsOrCategory ? allUserIds.length : getUserCount(db);
+
+        for (i = i; i > 0 ; i--) {
+            address userId;
+            if (hasSkillsOrCategory) {
+                userId = allUserIds[i - 1];
+            } else {
+                userId = EthlanceDB(db).getAddressValue(sha3("user/ids", i));
+            }
+
             if (isFreelancerAvailable(db, userId) &&
                 hasMinRating(db, userId, minAvgRating) &&
                 hasFreelancerMinRatingsCount(db, userId, minRatingsCount) &&
@@ -412,9 +424,12 @@ library UserLibrary {
             ) {
                 userIds[j] = userId;
                 j++;
+                if (j == userIds.length) {
+                    break;
+                }
             }
         }
-        return SharedLibrary.take(j, userIds);
+        userIds = SharedLibrary.take(j, userIds);
     }
 
 

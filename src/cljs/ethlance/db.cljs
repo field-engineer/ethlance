@@ -558,8 +558,8 @@
                    :ethlance-sponsor-wallet {:name "EthlanceSponsorWallet" :address "0xc80d2cb06ce606395178692de07ea9da1f873aa3"}
                    :ethlance-db {:name "EthlanceDB" :address "0x5371a8d8d8a86c76de935821ad1a3e9b908cfced"}
                    :ethlance-views {:name "EthlanceViews" :address "0x1f286cB2EB7AE530FD85FD6EcE2e17d4f60D8DaA"}
-                   :ethlance-search-freelancers {:name "EthlanceSearchFreelancers" :address "0x43386ad7af76ca5384bc06ae0c74e230f32744ee"}
-                   :ethlance-search-jobs {:name "EthlanceSearchJobs" :address "0x9e2f85eea233047e527039681ad84448c8926690"}}
+                   :ethlance-search-freelancers {:name "EthlanceSearchFreelancers" :address "0x46de2d45cd031afa9e5bef182fc19a8a66bacc18"}
+                   :ethlance-search-jobs {:name "EthlanceSearchJobs" :address "0x1ec22d966d5eb6c57b5bfc31871ef55f56f9cbd8"}}
    :my-addresses []
    :my-addresses-forced []
    :active-address nil

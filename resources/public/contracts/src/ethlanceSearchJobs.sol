@@ -40,7 +40,6 @@ contract EthlanceSearchJobs {
         uint8Filters[2] = estimatedDurations;
         uint8Filters[3] = hoursPerWeeks;
         jobIds = JobLibrary.searchJobs(ethlanceDB, categoryId, skillsAnd, skillsOr, uint8Filters, minBudgets, uintArgs);
-        jobIds = SharedLibrary.findTopNValues(jobIds, uintArgs[6] + uintArgs[7]);
         return SharedLibrary.getPage(jobIds, uintArgs[6], uintArgs[7], false);
     }
 }

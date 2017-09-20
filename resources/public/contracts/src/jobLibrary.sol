@@ -264,6 +264,9 @@ library JobLibrary {
     }
 
     function hasMinBudget(address db, uint jobId, uint[] minBudgets) internal returns(bool) {
+        if (minBudgets.length == 0) {
+            return true;
+        }
         var referenceCurrency = getReferenceCurrency(db, jobId);
         if (minBudgets[referenceCurrency] == 0) {
             return true;
@@ -319,9 +322,15 @@ library JobLibrary {
         address employerId;
         var allJobIds = SharedLibrary.intersectCategoriesAndSkills(db, categoryId, skillsAnd, skillsOr,
             SkillLibrary.getJobs, CategoryLibrary.getJobs, getJobCount);
-        jobIds = new uint[](allJobIds.length);
-        for (uint i = 0; i < allJobIds.length ; i++) {
-            jobId = allJobIds[i];
+        var maxCount = uintArgs[6] + uintArgs[7];
+        jobIds = new uint[](maxCount);
+
+        if (skillsAnd.length != 0 || skillsOr.length != 0 || categoryId != 0) {
+            allJobIds = SharedLibrary.sort(allJobIds);
+        }
+
+        for (uint i = allJobIds.length; i > 0 ; i--) {
+            jobId = allJobIds[i - 1];
             employerId = getEmployer(db, jobId);
             if (getStatus(db, jobId) == 1 &&
                 SharedLibrary.containsValue(db, jobId, "job/payment-type", uint8Filters[0]) &&
@@ -340,9 +349,12 @@ library JobLibrary {
             {
                 jobIds[j] = jobId;
                 j++;
+                if (j == maxCount) {
+                    break;
+                }
             }
         }
-        return SharedLibrary.take(j, jobIds);
+        jobIds = SharedLibrary.take(j, jobIds);
     }
 
     function getSponsorableJobs(address db)
